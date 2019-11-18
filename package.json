@@ -1,0 +1,14 @@
+{
+  "name": "sample-counter",
+  "version": "1.0.0",
+  "description": "simple counter example with pure redux",
+  "main": "index.js",
+  "author": "Keshava Kotri<keshav143420@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "redux": "^4.0.4"
+  }
+}
