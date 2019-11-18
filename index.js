@@ -1,20 +1,39 @@
 import { createStore } from 'redux';
 
-function counter(state = 0, action) {
-  switch (action.type) {
-    case "INCREMENT":
-      return state + 1
-    case "DECREMENT":
-      return state - 1;
-    default:
-      return state;
+function visibilityFilter(state = 'SHOW_ALL', action) {
+  if (action.type === 'SET_VISIBILITY_FILTER') {
+    return action.filter
+  } else {
+    return state
   }
 }
 
-const store = createStore(counter);
+function todos(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([{ text: action.text, completed: false }])
+    case 'TOGGLE_TODO':
+      return state.map((todo, index) =>
+        action.index === index
+          ? { text: todo.text, completed: !todo.completed }
+          : todo
+      )
+    default:
+      return state
+  }
+}
+
+function todoApp(state = {}, action) {
+  return {
+    todos: todos(state.todos, action),
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action)
+  }
+}
+
+const store = createStore(todoApp);
 
 store.subscribe(() => console.log(store.getState()))
 
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'DECREMENT' })
+store.dispatch({ type: 'ADD_TODO', text: 'Go to swimming pool' })
+store.dispatch({ type: 'SET_VISIBILITY_FILTER', filter: 'SHOW_ALL' })
+store.dispatch({ type: 'TOGGLE_TODO', index: 0 })
